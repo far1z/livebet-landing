@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: NextRequest) {
   try {
     const { name, email } = await request.json()
@@ -23,6 +21,21 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Check if API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.warn('RESEND_API_KEY not configured. Email will not be sent.')
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Successfully joined the waitlist! (Email notification disabled - configure RESEND_API_KEY to enable)',
+        },
+        { status: 200 }
+      )
+    }
+
+    // Initialize Resend only when needed
+    const resend = new Resend(process.env.RESEND_API_KEY)
 
     // Send welcome email to user
     const userEmail = await resend.emails.send({
