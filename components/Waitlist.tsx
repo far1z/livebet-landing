@@ -11,17 +11,43 @@ export default function Waitlist() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would integrate with your email service
-    console.log('Waitlist signup:', { name, email })
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
+    setLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to join waitlist')
+      }
+
+      setSubmitted(true)
       setEmail('')
       setName('')
-    }, 3000)
+
+      // Reset form after 5 seconds
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 5000)
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -94,9 +120,18 @@ export default function Waitlist() {
                   className="w-full px-6 py-4 bg-dark-card border border-white/10 rounded-xl focus:border-neon-green focus:outline-none focus:ring-2 focus:ring-neon-green/20 transition-all text-white placeholder-gray-500"
                 />
               </div>
-              <Button type="submit" variant="primary" className="w-full">
-                Join the Waitlist
+              <Button type="submit" variant="primary" className="w-full" disabled={loading}>
+                {loading ? 'Joining...' : 'Join the Waitlist'}
               </Button>
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-400 text-sm text-center mt-2"
+                >
+                  {error}
+                </motion.p>
+              )}
             </motion.form>
           ) : (
             <motion.div

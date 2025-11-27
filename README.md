@@ -4,11 +4,20 @@
 
 An insanely good landing page for Livebet - the next-generation prediction market platform that turns every moment you watch into an interactive market.
 
+## ✨ Features
+
+- 🎨 **Beautiful Design**: Dark mode with neon accents and glassmorphism
+- ⚡ **Smooth Animations**: Framer Motion scroll-triggered animations
+- 📱 **Fully Responsive**: Mobile-first design that looks amazing everywhere
+- 📧 **Working Waitlist**: Automated email collection with Resend integration
+- 🚀 **Production Ready**: Optimized and ready to deploy
+
 ## 🚀 Tech Stack
 
 - **Framework**: Next.js 14 with App Router
 - **Styling**: Tailwind CSS with custom design system
 - **Animations**: Framer Motion for smooth, professional animations
+- **Email**: Resend for waitlist emails
 - **TypeScript**: Full type safety throughout
 - **Fonts**: Google Fonts (Inter + Space Grotesk)
 
@@ -40,7 +49,7 @@ An insanely good landing page for Livebet - the next-generation prediction marke
 4. **Features Grid**: 6 feature cards with gradient backgrounds
 5. **Who It's For**: 3 persona cards (Sports Degens, Stream Addicts, Prediction Nerds)
 6. **Roadmap**: Timeline with 4 phases
-7. **Waitlist Signup**: Email capture form with stats
+7. **Waitlist Signup**: Working email capture with automated welcome emails (Resend integration)
 8. **FAQ**: Accordion-style FAQ with 6 questions
 9. **Footer**: Simple footer with social links
 
@@ -55,6 +64,25 @@ An insanely good landing page for Livebet - the next-generation prediction marke
 \`\`\`bash
 npm install
 \`\`\`
+
+### Setup Waitlist (Optional but Recommended)
+
+To enable the working waitlist with email notifications:
+
+1. Copy the environment variables template:
+   \`\`\`bash
+   cp .env.example .env.local
+   \`\`\`
+
+2. Get a free Resend API key from [resend.com](https://resend.com)
+
+3. Add your keys to \`.env.local\`:
+   \`\`\`env
+   RESEND_API_KEY=re_your_api_key_here
+   ADMIN_EMAIL=your-email@example.com
+   \`\`\`
+
+**Full setup guide**: See [WAITLIST_SETUP.md](./WAITLIST_SETUP.md) for detailed instructions.
 
 ### Development
 
